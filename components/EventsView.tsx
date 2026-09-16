@@ -21,7 +21,7 @@ const HINTS: Record<View, string> = {
   list: 'Soonest first. Panic accordingly.',
   comedian: 'Only comics with shows on the books. The rest are “writing”.',
 };
-const isProvince = (v: string | null): v is ProvinceFilter => v === 'gp' || v === 'wc' || v === 'kzn';
+const isProvince = (v: string | null): v is ProvinceFilter => !!v && v in PROVINCES;
 
 export function EventsView() {
   const params = useSearchParams();
@@ -136,7 +136,7 @@ function CalendarView({ province, provinceLabel }: { province: ProvinceFilter; p
                 aria-pressed={!other && sameDay(d, selected)} aria-label={`${fmt.long(d)}${evs.length ? `, ${plural(evs.length, 'show')}` : ''}`}
                 onClick={() => setSelected(d)}>
                 <span className="n">{d.getDate()}</span>
-                <span className="cal-dots">{provs.map((p) => <i key={p} data-province={p} />)}</span>
+                <span className="cal-dots">{provs.map((p) => <i key={p} style={{ background: `var(--${p})` }} />)}</span>
               </button>
             );
           })}

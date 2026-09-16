@@ -16,7 +16,7 @@ export default function Home() {
   const upcoming = upcomingEvents();
   const weekAhead = thisWeek.filter((e) => e.date >= TODAY);
 
-  const counts: Record<ProvinceId, number> = { gp: 0, wc: 0, kzn: 0 };
+  const counts = Object.fromEntries(Object.keys(PROVINCES).map((k) => [k, 0])) as Record<ProvinceId, number>;
   thisWeek.forEach((e) => { counts[eventProvince(e)]++; });
   const venueCounts = new Map<string, number>();
   thisWeek.forEach((e) => venueCounts.set(e.venue, (venueCounts.get(e.venue) ?? 0) + 1));
@@ -25,8 +25,8 @@ export default function Home() {
   const comicsOnStage = new Set(thisWeek.flatMap((e) => e.lineup)).size;
   const soldOut = thisWeek.filter((e) => e.soldOut).length;
   const total = thisWeek.length || 1;
-  const picks = WEEK_SUMMARY.picks.map((id) => EVENTS.find((e) => e.id === id)).filter((e): e is NonNullable<typeof e> => !!e);
   const ticker = upcoming.slice(0, 12);
+  const picks = WEEK_SUMMARY.picks.map((title) => EVENTS.find((e) => e.title === title && e.date >= TODAY)).filter((e): e is NonNullable<typeof e> => !!e);
 
   return (
     <>
@@ -35,7 +35,7 @@ export default function Home() {
         <div className="hero-media" aria-hidden="true"><Image src="/img/hero.jpg" alt="" fill priority sizes="100vw" /></div>
         <div className="container hero-inner">
           <h1 className="enter" style={{ '--i': 0 } as React.CSSProperties}>Come for the giggles. <em>Stay for the cult.</em></h1>
-          <p className="lead enter" style={{ '--i': 1 } as React.CSSProperties}>The Giggling Cult keeps the sacred calendar of every stand-up show in Gauteng, the Western Cape and KZN: who&apos;s on, where, when, and whether it&apos;s sold out yet. No robes. No rituals. Just laughing in a dark room with strangers.</p>
+          <p className="lead enter" style={{ '--i': 1 } as React.CSSProperties}>The Giggling Cult keeps the sacred calendar of every stand-up show in South Africa, all nine provinces: who&apos;s on, where, when, and whether it&apos;s sold out yet. No robes. No rituals. Just laughing in a dark room with strangers.</p>
           <div className="hero-actions enter" style={{ '--i': 2 } as React.CSSProperties}>
             <Link className="btn btn-primary btn-lg" href="/events">Show me the shows</Link>
             <Link className="btn btn-ghost btn-lg" href="/comedians">Find your comedian</Link>
@@ -44,7 +44,7 @@ export default function Home() {
             <div className="stat"><b>{weekAhead.length}</b><span>shows before Sunday</span></div>
             <div className="stat"><b>{upcoming.length}</b><span>shows on the books</span></div>
             <div className="stat"><b>{COMEDIANS.length}</b><span>comics in the congregation</span></div>
-            <div className="stat"><b>{Object.keys(PROVINCES).length}</b><span>provinces converted (so far)</span></div>
+            <div className="stat"><b>{Object.keys(PROVINCES).length}</b><span>provinces, every one of them</span></div>
           </div>
         </div>
       </section>
@@ -56,7 +56,8 @@ export default function Home() {
       </div>
 
       {/* This week */}
-      <section className="section">
+      <section className="section band">
+        <PageMedia src="/img/festival.jpg" />
         <div className="container">
           <div className="section-head">
             <div>
@@ -66,6 +67,8 @@ export default function Home() {
           </div>
           <div className="week-panel">
             <div className="week-editorial enter" style={{ '--i': 0 } as React.CSSProperties}>
+              <div className="week-media"><Image src="/img/tickets.jpg" alt="" fill sizes="(max-width: 900px) 100vw, 60vw" /></div>
+              <div className="week-body">
               <span className="eyebrow" style={{ margin: 0 }}>From the pulpit</span>
               <h3>{WEEK_SUMMARY.headline}</h3>
               <p>{WEEK_SUMMARY.body}</p>
@@ -73,17 +76,18 @@ export default function Home() {
                 <span className="filter-label" style={{ marginBottom: 4 }}>Go to these. Seriously.</span>
                 {picks.map((e) => <MiniEvent key={e.id} e={e} />)}
               </div>
+              </div>
             </div>
             <div className="week-stats">
               <div className="week-stat is-wide enter" style={{ '--i': 1 } as React.CSSProperties}>
                 <b>{thisWeek.length}</b><span>shows this week across {Object.values(counts).filter(Boolean).length} provinces. Pick a lane.</span>
-                <div className="bar">{(Object.keys(counts) as ProvinceId[]).map((k) => <i key={k} data-province={k} style={{ width: `${(counts[k] / total) * 100}%` }} />)}</div>
-                <div className="legend">{(Object.keys(counts) as ProvinceId[]).map((k) => <span key={k}><i style={{ background: `var(--${k})` }} />{PROVINCES[k].short} {counts[k]}</span>)}</div>
+                <div className="bar">{(Object.keys(counts) as ProvinceId[]).map((k) => <i key={k} style={{ width: `${(counts[k] / total) * 100}%`, background: `var(--${k})` }} />)}</div>
+                <div className="legend">{(Object.keys(counts) as ProvinceId[]).filter((k) => counts[k]).map((k) => <span key={k}><i style={{ background: `var(--${k})` }} />{PROVINCES[k].short} {counts[k]}</span>)}</div>
               </div>
               <div className="week-stat enter" style={{ '--i': 2 } as React.CSSProperties}><b>{comicsOnStage}</b><span>comics risking it all</span></div>
               <div className="week-stat enter" style={{ '--i': 3 } as React.CSSProperties}><b>{headliners}</b><span>headliners, name on the poster</span></div>
               <div className="week-stat enter" style={{ '--i': 4 } as React.CSSProperties}><b>{soldOut}</b><span>gone already. Should&apos;ve moved faster.</span></div>
-              <div className="week-stat enter" style={{ '--i': 5 } as React.CSSProperties}><b style={{ fontSize: 20, lineHeight: 1.2 }}>{busiest ? VENUES[busiest[0] as keyof typeof VENUES].name : '—'}</b><span>hardest-working room · {busiest ? busiest[1] : 0} shows</span></div>
+              <div className="week-stat enter" style={{ '--i': 5 } as React.CSSProperties}><b style={{ fontSize: 17, lineHeight: 1.2 }}>{busiest ? VENUES[busiest[0] as keyof typeof VENUES].name : '—'}</b><span>hardest-working room · {busiest ? busiest[1] : 0} shows</span></div>
             </div>
           </div>
         </div>

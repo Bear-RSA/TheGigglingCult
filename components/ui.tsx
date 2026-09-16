@@ -4,22 +4,28 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { PROVINCES } from '@/lib/data';
+import photos from '@/lib/photos.json';
 import type { Comedian, ProvinceFilter, ProvinceId, SocialNetwork } from '@/lib/types';
 import { Icon, SOCIAL_LABEL, SOCIAL_URL } from './Icons';
 
 /* ---------- Avatar (photo with initials fallback) ---------- */
 const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('');
 
+const PHOTOS = new Set<string>(photos);
+
 export function Avatar({ c, large = false }: { c: Comedian; large?: boolean }) {
   const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const src = c.photo ?? `/img/comedians/${c.slug}.jpg`;
+  const img = useRef<HTMLImageElement>(null);
+  // Explicit `photo` URL, else a file in public/img/comedians indexed by scripts/index-photos.js
+  const src = c.photo ?? (PHOTOS.has(c.slug) ? `/img/comedians/${c.slug}.jpg` : null);
+  // An image that finished loading before hydration never fires onLoad — check on mount.
+  useEffect(() => { if (img.current?.complete && img.current.naturalWidth > 0) setLoaded(true); }, []);
   return (
     <span className={`avatar ${large ? 'avatar-lg' : ''} ${loaded ? 'has-photo' : ''}`} aria-hidden="true">
       {initials(c.name)}
-      {!failed && (
+      {src && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt="" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} />
+        <img ref={img} src={src} alt="" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} />
       )}
     </span>
   );
@@ -27,7 +33,7 @@ export function Avatar({ c, large = false }: { c: Comedian; large?: boolean }) {
 
 /* ---------- Tags ---------- */
 export const ProvinceTag = ({ id }: { id: ProvinceId }) => (
-  <span className="tag" data-province={id}><i className="dot" />{PROVINCES[id].short}</span>
+  <span className="tag" data-province={id}>{PROVINCES[id].short}</span>
 );
 export const RisingTag = () => <span className="tag tag-rising">Rising</span>;
 
@@ -46,7 +52,7 @@ export function Socials({ c, expanded = false }: { c: Comedian; expanded?: boole
   return (
     <div className="socials">
       {entries.map(([k, h]) => { const I = Icon[k]; return (
-        <a key={k} className="social" href={SOCIAL_URL[k](h)} target="_blank" rel="noopener" aria-label={`${c.name} on ${SOCIAL_LABEL[k]}`} onClick={(e) => e.stopPropagation()}><I /></a>
+        <a key={k} className="social" href={SOCIAL_URL[k](h)} target="_blank" rel="noopener" aria-label={`${c.name} on ${SOCIAL_LABEL[k]}`} ><I /></a>
       ); })}
     </div>
   );
@@ -58,7 +64,7 @@ export function ProvinceChips({ value, onChange, allLabel = 'All provinces' }: {
     <>
       <button className="chip" aria-pressed={value === 'all'} onClick={() => onChange('all')}>{allLabel}</button>
       {Object.values(PROVINCES).map((p) => (
-        <button key={p.id} className="chip" data-province={p.id} aria-pressed={value === p.id} onClick={() => onChange(p.id)}><i className="dot" />{p.name}</button>
+        <button key={p.id} className="chip" data-province={p.id} aria-pressed={value === p.id} onClick={() => onChange(p.id)}>{p.name}</button>
       ))}
     </>
   );

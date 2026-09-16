@@ -10,7 +10,7 @@ const body = Inter({ subsets: ['latin'], weight: ['400', '500', '600'], variable
 
 export const metadata: Metadata = {
   title: { default: 'The Giggling Cult — Every stand-up show in South Africa', template: '%s — The Giggling Cult' },
-  description: 'The central point for South African stand-up comedy. Browse shows across Gauteng, the Western Cape and KwaZulu-Natal, discover comedians and get the week in comedy.',
+  description: 'The central point for South African stand-up comedy. Browse shows across all nine provinces, discover comedians and get the week in comedy.',
   icons: { icon: '/favicon.svg' },
 };
 

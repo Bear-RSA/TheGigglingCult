@@ -5,7 +5,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { PROVINCES } from '@/lib/data';
 import { Icon } from './Icons';
+import { Wordmark } from './Wordmark';
 
 const LINKS = [
   ['/', 'Home'], ['/events', 'Events'], ['/comedians', 'Comedians'], ['/news', 'News'],
@@ -46,14 +48,14 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-wordmark" aria-hidden="true">The Giggling <em>Cult</em></div>
+        <Wordmark />
         <div className="footer-inner">
           <div>
             <Link className="brand" href="/"><Icon.logo className="brand-mark" /><span>The Giggling Cult</span></Link>
-            <p>Every stand-up show in Mzansi, one calendar. Currently converting Gauteng, the Western Cape and KwaZulu-Natal. The rest of you: soon.</p>
+            <p>Every stand-up show in Mzansi, one calendar. All nine provinces, from the Cape to the Lowveld. No town too small.</p>
           </div>
           <div><h4>Wander</h4><ul><li><Link href="/events">The calendar</Link></li><li><Link href="/comedians">The congregation</Link></li><li><Link href="/news">The goss</Link></li></ul></div>
-          <div><h4>Territories</h4><ul><li><Link href="/events?province=gp">Gauteng</Link></li><li><Link href="/events?province=wc">Western Cape</Link></li><li><Link href="/events?province=kzn">KwaZulu-Natal</Link></li></ul></div>
+          <div><h4>Territories</h4><ul>{Object.values(PROVINCES).map((p) => <li key={p.id}><Link href={`/events?province=${p.id}`}>{p.name}</Link></li>)}</ul></div>
           <div><h4>Enlist</h4><ul><li><Link href="/join?as=comedian">I&apos;m funny (allegedly)</Link></li><li><Link href="/join?as=audience">I just want to laugh</Link></li><li><a href="mailto:hello@thegigglingcult.co.za">Talk to a human</a></li></ul></div>
         </div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} The Giggling Cult · Made in South Africa</span><span>Powered by Mirai Stack</span></div>

@@ -6,6 +6,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { PROVINCES } from '@/lib/data';
 import { Icon } from './Icons';
 import { useUI } from './UIProvider';
 import { Segmented } from './ui';
@@ -115,7 +116,7 @@ export function JoinForm() {
             <div className="field">
               <label htmlFor="a-province">Your province</label>
               <select className={cls('province')} id="a-province" name="province" required defaultValue="" onChange={() => clear('province')}>
-                <option value="">Choose a province</option><option value="gp">Gauteng</option><option value="wc">Western Cape</option><option value="kzn">KwaZulu-Natal</option><option value="all">All three (I travel for laughs)</option>
+                <option value="">Choose a province</option>{Object.values(PROVINCES).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}<option value="all">Anywhere (I travel for laughs)</option>
               </select>
             </div>
             <label className="check"><input type="checkbox" name="openmics" /> Also warn me about open mics and new-faces nights (high risk, high reward)</label>
@@ -133,7 +134,7 @@ export function JoinForm() {
               <div className="field">
                 <label htmlFor="c-province">Home province</label>
                 <select className={cls('province')} id="c-province" name="province" required defaultValue="" onChange={() => clear('province')}>
-                  <option value="">Choose a province</option><option value="gp">Gauteng</option><option value="wc">Western Cape</option><option value="kzn">KwaZulu-Natal</option>
+                  <option value="">Choose a province</option>{Object.values(PROVINCES).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
               </div>
               <div className="field">

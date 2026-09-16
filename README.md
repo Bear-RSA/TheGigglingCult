@@ -3,7 +3,7 @@
 Come for the giggles. Stay for the cult.
 
 A platform for South African stand-up comedy: one calendar for every show, a directory of every
-comedian, and the week in comedy — currently covering Gauteng, the Western Cape and KwaZulu-Natal.
+comedian, and the week in comedy — across all nine provinces.
 
 **Features**
 - Interactive events calendar with list and by-comedian views, filterable by province, URL-shareable

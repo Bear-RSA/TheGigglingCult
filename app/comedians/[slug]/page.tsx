@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ComedianCard, MiniEvent } from '@/components/Cards';
 import { Icon } from '@/components/Icons';
+import { PageMedia } from '@/components/PageMedia';
 import { Avatar, ProvinceTag, RisingTag, Socials } from '@/components/ui';
 import { PROVINCES } from '@/lib/data';
 import { comedian, plural, sortedComedians, upcomingFor } from '@/lib/queries';
@@ -26,7 +27,8 @@ export default async function ComedianPage({ params }: Props) {
 
   return (
     <>
-      <section className="page-head">
+      <section className="page-head has-media">
+        <PageMedia src="/img/greenroom.jpg" priority />
         <div className="container">
           <Link className="btn btn-soft btn-sm enter" style={{ '--i': 0 } as React.CSSProperties} href="/comedians"><Icon.left /> All comedians</Link>
           <div className="enter" style={{ '--i': 1, display: 'flex', gap: 24, alignItems: 'center', marginTop: 32, flexWrap: 'wrap' } as React.CSSProperties}>

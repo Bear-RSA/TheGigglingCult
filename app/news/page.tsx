@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { NewsList } from '@/components/NewsList';
+import { PageMedia } from '@/components/PageMedia';
 
 export const metadata: Metadata = {
   title: 'News',
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
 export default function NewsPage() {
   return (
     <>
-      <section className="page-head">
+      <section className="page-head has-media">
+        <PageMedia src="/img/neon.jpg" priority />
         <div className="container">
           <span className="eyebrow enter" style={{ '--i': 0 } as React.CSSProperties}>News</span>
           <h1 className="enter" style={{ '--i': 1 } as React.CSSProperties}>Hot off the mic.</h1>

@@ -11,7 +11,7 @@ import type { ProvinceFilter } from '@/lib/types';
 import { ComedianCard } from './Cards';
 import { Empty, ProvinceChips } from './ui';
 
-const isProvince = (v: string | null): v is ProvinceFilter => v === 'gp' || v === 'wc' || v === 'kzn';
+const isProvince = (v: string | null): v is ProvinceFilter => !!v && v in PROVINCES;
 
 export function ComediansGrid() {
   const params = useSearchParams();

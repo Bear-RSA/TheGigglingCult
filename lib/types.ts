@@ -1,4 +1,4 @@
-export type ProvinceId = 'gp' | 'wc' | 'kzn';
+export type ProvinceId = 'gp' | 'wc' | 'kzn' | 'ec' | 'fs' | 'lp' | 'mp' | 'nw' | 'nc';
 
 export type Province = {
   id: ProvinceId;
@@ -10,7 +10,8 @@ export type Province = {
 export type VenueId =
   | 'goliath' | 'parkers' | 'teatro' | 'lyric' | 'atterbury'
   | 'ctcc' | 'joumase' | 'baxter' | 'bay' | 'grandwest'
-  | 'catalina' | 'playhouse' | 'rhumbelow' | 'sneddon' | 'icc';
+  | 'catalina' | 'playhouse' | 'rhumbelow' | 'sneddon' | 'icc'
+  | 'athenaeum' | 'guild' | 'sand' | 'meropa' | 'emnotweni' | 'superbowl' | 'ncTheatre';
 
 export type Venue = {
   id: VenueId;

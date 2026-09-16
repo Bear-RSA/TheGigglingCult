@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { NewsCard } from '@/components/Cards';
 import { Icon } from '@/components/Icons';
 import { NEWS } from '@/lib/data';
 import { fmt } from '@/lib/dates';
+import { imageForCategory } from '@/lib/imagery';
 import { article } from '@/lib/queries';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -32,6 +34,7 @@ export default async function ArticlePage({ params }: Props) {
             <span className="tag tag-accent">{n.category}</span><span>{fmt.long(n.date)}</span><span>·</span><span>{n.readTime} min read</span>
           </div>
           <h1 className="enter" style={s(2)}>{n.title}</h1>
+          <div className="article-media enter" style={s(3)}><Image src={imageForCategory(n.category)} alt="" fill priority sizes="(max-width: 800px) 100vw, 760px" /></div>
           <p className="body enter" style={{ ...s(3), fontSize: 20, color: 'var(--text)' }}>{n.excerpt}</p>
           <p className="body enter" style={s(4)}>{n.body}</p>
         </div>

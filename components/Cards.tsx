@@ -2,9 +2,11 @@
 
 /* Event, comedian and news cards */
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { TODAY, VENUES } from '@/lib/data';
 import { fmt } from '@/lib/dates';
+import { imageForCategory } from '@/lib/imagery';
 import { TYPE_LABEL, bySlug, plural, sameDay, upcomingFor } from '@/lib/queries';
 import type { Article, Comedian, Event } from '@/lib/types';
 import { Icon } from './Icons';
@@ -95,30 +97,34 @@ export function EventsByDate({ events }: { events: Event[] }) {
 export function ComedianCard({ c, i = 0 }: { c: Comedian; i?: number }) {
   const shows = upcomingFor(c.slug).length;
   return (
-    <Link className="card is-button comedian-card enter" style={{ '--i': i } as React.CSSProperties} href={`/comedians/${c.slug}`}>
-      <div className="cc-top">
-        <Avatar c={c} />
-        <div>
-          <h3>{c.name}</h3>
+    // The whole card is clickable via the stretched name link; the social icons stay separate links (no nested <a>).
+    <article className="card is-button comedian-card enter" style={{ '--i': i } as React.CSSProperties}>
+      <div className="cc-media"><Avatar c={c} /></div>
+      <div className="cc-body">
+        <div className="cc-top">
+          <h3><Link className="cc-link" href={`/comedians/${c.slug}`}>{c.name}</Link></h3>
           <div className="cc-sub"><ProvinceTag id={c.province} />{c.upcoming && <RisingTag />}</div>
         </div>
+        <p className="bio">{c.bio}</p>
+        <div className="cc-foot">
+          <span className="style-line">{shows ? plural(shows, 'upcoming show') : 'Between gigs'}</span>
+          <Socials c={c} />
+        </div>
       </div>
-      <p className="bio">{c.bio}</p>
-      <div className="cc-foot">
-        <span className="style-line">{shows ? plural(shows, 'upcoming show') : 'Between gigs'}</span>
-        <Socials c={c} />
-      </div>
-    </Link>
+    </article>
   );
 }
 
 export function NewsCard({ n, i = 0, featured = false }: { n: Article; i?: number; featured?: boolean }) {
   return (
     <Link className={`card is-link news-card enter ${featured ? 'news-feature' : ''}`} style={{ '--i': i } as React.CSSProperties} href={`/news/${n.slug}`}>
+      <div className="nc-media"><Image src={imageForCategory(n.category)} alt="" fill sizes={featured ? '(max-width: 900px) 100vw, 66vw' : '(max-width: 900px) 100vw, 33vw'} /></div>
+      <div className="nc-body">
       <div className="nc-meta"><span className="tag tag-accent">{n.category}</span><span>{fmt.short(n.date)}</span><span>·</span><span>{n.readTime} min read</span></div>
       <h3>{n.title}</h3>
       <p>{n.excerpt}</p>
       <span className="nc-foot">Read <Icon.arrow /></span>
+      </div>
     </Link>
   );
 }
