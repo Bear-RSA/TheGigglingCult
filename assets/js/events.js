@@ -11,6 +11,7 @@
     selected: new Date(TODAY),
     comedian: bySlug[param('comedian')] ? param('comedian') : null,
     search: '',
+    letter: 'all',
   };
 
   const filtered = () => EVENTS.filter((e) => state.province === 'all' || eventProvince(e) === state.province);
@@ -132,16 +133,35 @@
     .map((c) => ({ c, shows: upcomingFor(c.slug).filter((e) => state.province === 'all' || eventProvince(e) === state.province) }))
     .filter(({ shows }) => shows.length);
 
+  const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const pickerAlpha = qs('#picker-alpha');
+  const renderPickerAlpha = (all) => {
+    const available = new Set(all.map(({ c }) => c.name[0].toUpperCase()));
+    if (state.letter !== 'all' && !available.has(state.letter)) state.letter = 'all';
+    pickerAlpha.innerHTML = `
+      <button class="alpha-btn alpha-all" data-letter="all" aria-pressed="${state.letter === 'all'}">All</button>
+      ${LETTERS.map((L) => `<button class="alpha-btn" data-letter="${L}" aria-pressed="${state.letter === L}" ${available.has(L) ? '' : 'disabled'} aria-label="Comedians starting with ${L}">${L}</button>`).join('')}`;
+  };
+  pickerAlpha.addEventListener('click', (e) => {
+    const btn = e.target.closest('.alpha-btn');
+    if (!btn || btn.disabled) return;
+    state.letter = btn.dataset.letter;
+    qsa('.alpha-btn', pickerAlpha).forEach((b) => b.setAttribute('aria-pressed', b === btn));
+    renderPicker();
+  });
+
   const renderPicker = () => {
     const all = comediansWithShows();
+    renderPickerAlpha(all);
     const q = state.search.trim().toLowerCase();
-    const list = q ? all.filter(({ c }) => c.name.toLowerCase().includes(q)) : all;
+    let list = q ? all.filter(({ c }) => c.name.toLowerCase().includes(q)) : all;
+    if (state.letter !== 'all') list = list.filter(({ c }) => c.name[0].toUpperCase() === state.letter);
     pickerItems.innerHTML = list.length
       ? list.map(({ c, shows }) => `
         <button class="picker-item" data-pick="${c.slug}" aria-pressed="${state.comedian === c.slug}">
           ${avatar(c)}<span class="name">${esc(c.name)}</span><span class="count">${shows.length}</span>
         </button>`).join('')
-      : `<div class="picker-empty">Nobody called “${esc(state.search)}”. Yet.</div>`;
+      : `<div class="picker-empty">${q ? `Nobody called “${esc(state.search)}”. Yet.` : `No one under ${state.letter} with a show booked.`}</div>`;
     qs('#filter-result').textContent = `${plural(all.length, 'comedian')} with upcoming shows · ${provinceLabel()}`;
   };
 
