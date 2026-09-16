@@ -1,10 +1,24 @@
 {
   "name": "thegigglingcult",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "The Giggling Cult — South African stand-up comedy platform (static site)",
+  "description": "The Giggling Cult — South African stand-up comedy platform",
   "scripts": {
-    "dev": "npx serve . -l 3000",
-    "start": "npx serve . -l 3000"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.6.0"
   }
 }

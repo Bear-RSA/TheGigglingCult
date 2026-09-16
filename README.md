@@ -6,46 +6,55 @@ A platform for South African stand-up comedy: one calendar for every show, a dir
 comedian, and the week in comedy — currently covering Gauteng, the Western Cape and KwaZulu-Natal.
 
 **Features**
-- Interactive events calendar with list and by-comedian views, filterable by province
+- Interactive events calendar with list and by-comedian views, filterable by province, URL-shareable
 - A–Z comedian directory with bios, social links, upcoming shows and a "Rising" list for new talent
+- Individual comedian and article pages
 - Weekly summary with live stats, latest news, and comedian/audience newsletter sign-up
-- Zero dependencies — plain HTML, CSS and JavaScript; deploys anywhere static files are served
+- Next.js App Router + TypeScript; persistent layout so navigation never reloads the page
 
-**Status:** demo build. All shows, dates, prices and news are sample data; see `assets/js/data.js`.
+**Status:** demo build. All shows, dates, prices and news are sample data; see `lib/data.ts`.
 
 ## Run it
 
-No build step. Open `index.html`, or serve the folder:
-
 ```
+npm install
 npm run dev        # http://localhost:3000
-# or
-python -m http.server 8080
+npm run build      # production build
+npm run typecheck  # tsc --noEmit
 ```
 
 ## Structure
 
 ```
-index.html          Home — hero, this week in comedy, coming up (week/month), news, join
-events.html         Calendar / list / by-comedian views with province filter
-comedians.html      A–Z letter nav, province + rising filters, profile drawer
-news.html           Topic-filtered listing; ?article=slug shows a single article
-join.html           Comedian / audience signup (stores to localStorage in this demo)
-assets/css/styles.css
-assets/js/data.js   ALL content lives here — swap for an API/CMS
-assets/js/app.js    Shared UI: nav, footer, cards, drawer, toast, segmented control
-assets/js/*.js      One file per page
+app/
+  layout.tsx              root layout: fonts, nav, footer, drawer/toast provider (persists across pages)
+  template.tsx            per-navigation page transition
+  page.tsx                home
+  events/page.tsx         calendar / list / by-comedian (?view= &province= &comedian=)
+  comedians/page.tsx      A–Z (?letter= &province= &rising=1)
+  comedians/[slug]/       comedian profile
+  news/page.tsx           listing
+  news/[slug]/            article
+  join/page.tsx           signup (?as=comedian|audience)
+  globals.css             the design system (gig-poster direction)
+components/
+  Chrome.tsx              Nav, Footer
+  UIProvider.tsx          event drawer + toasts (useUI())
+  Cards.tsx               EventCard, EventRow, MiniEvent, EventsByDate, ComedianCard, NewsCard
+  ui.tsx                  Avatar, tags, ProvinceChips, Segmented, Empty
+  EventsView.tsx, ComediansGrid.tsx, NewsList.tsx, ComingUp.tsx, JoinForm.tsx
+lib/
+  types.ts                Comedian, Event, Venue, Article, Province
+  data.ts                 ALL content — swap for an API/CMS
+  queries.ts              filters, date ranges, lookups
+  dates.ts                formatting
+public/img/               photography + comedian photos (see public/img/comedians/README.md)
 ```
-
-## Deep links
-
-- `events.html?province=kzn` · `events.html?view=list` · `events.html?view=comedian&comedian=celeste-ntuli`
-- `comedians.html?letter=M` · `comedians.html?province=wc&rising=1` · `comedians.html?open=loyiso-gola`
-- `join.html?as=comedian`
 
 ## Before launch
 
-- Verify every social handle in `data.js` — they are best-effort placeholders.
-- Replace the `upcoming: true` placeholder comics with the real rising roster.
-- Replace `day(n)` event dates with real dates (or an API).
-- Wire `join.js` to a real newsletter/CRM endpoint (currently localStorage).
+- Verify every social handle in `lib/data.ts` — they are best-effort placeholders.
+- Replace the `upcoming: true` placeholder comics (and their AI-generated photos) with the real roster.
+- Replace `day(n)` relative dates with real dates or an API; then drop `force-dynamic` and let pages prerender.
+- Wire `JoinForm.tsx` to a real newsletter/CRM endpoint (currently localStorage).
+- Add ticketing links (Quicket / Webtickets / Computicket) to events.
