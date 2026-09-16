@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Join the Cult — The Giggling Cult</title>
+  <meta name="description" content="Join The Giggling Cult as a comedian to list your shows, or as an audience member for the weekly South African comedy newsletter.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header id="site-nav"></header>
+
+  <main>
+    <section class="page-head">
+      <div class="container">
+        <span class="eyebrow enter" style="--i:0">Join the cult</span>
+        <h1 class="enter" style="--i:1">Pick your side.</h1>
+        <p class="enter" style="--i:2">Comedians get a profile and a spot on the calendar. Audiences get one email a week with every show worth seeing. Both free. No goats involved.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container join-layout">
+        <!-- Left: what you get -->
+        <div>
+          <div class="seg enter" style="--i:3" id="role-seg" role="group" aria-label="I am a">
+            <button class="seg-btn" data-value="audience" aria-pressed="true">Audience member</button>
+            <button class="seg-btn" data-value="comedian" aria-pressed="false">Comedian</button>
+          </div>
+
+          <div class="perks enter" style="--i:4" id="perks"></div>
+        </div>
+
+        <!-- Right: the form -->
+        <div class="join-form enter" style="--i:5">
+          <!-- Audience -->
+          <form class="form-panel" id="form-audience" data-active="true" novalidate>
+            <div>
+              <h2 style="font-size:26px">The weekly sermon, straight to your inbox.</h2>
+              <p class="muted small" style="margin-top:6px">Every Monday. Unsubscribe in one click, no guilt trip. Well, a small one.</p>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="a-name">First name</label><input class="input" id="a-name" name="name" type="text" autocomplete="given-name" required placeholder="Thandi"></div>
+              <div class="field"><label for="a-email">Email</label><input class="input" id="a-email" name="email" type="email" autocomplete="email" required placeholder="you@example.co.za"></div>
+            </div>
+            <div class="field">
+              <label for="a-province">Your province</label>
+              <select class="input" id="a-province" name="province" required>
+                <option value="">Choose a province</option>
+                <option value="gp">Gauteng</option>
+                <option value="wc">Western Cape</option>
+                <option value="kzn">KwaZulu-Natal</option>
+                <option value="all">All three (I travel for laughs)</option>
+              </select>
+            </div>
+            <label class="check"><input type="checkbox" name="openmics"> Also warn me about open mics and new-faces nights (high risk, high reward)</label>
+            <button class="btn btn-primary btn-lg" type="submit" id="a-submit"><span class="btn-content">Join the flock</span></button>
+            <p class="small muted">You'll get one email a week. We don't sell your details to venues, promoters or your ex.</p>
+          </form>
+
+          <!-- Comedian -->
+          <form class="form-panel" id="form-comedian" data-active="false" novalidate>
+            <div>
+              <h2 style="font-size:26px">Get your name on the wall.</h2>
+              <p class="muted small" style="margin-top:6px">We'll check you're real (and funny-adjacent) and email you when it's live.</p>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="c-name">Stage name</label><input class="input" id="c-name" name="name" type="text" required placeholder="As it appears on posters. Or would, if you had posters."></div>
+              <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" autocomplete="email" required placeholder="you@example.co.za"></div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="c-province">Home province</label>
+                <select class="input" id="c-province" name="province" required>
+                  <option value="">Choose a province</option>
+                  <option value="gp">Gauteng</option>
+                  <option value="wc">Western Cape</option>
+                  <option value="kzn">KwaZulu-Natal</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="c-years">Years performing</label>
+                <select class="input" id="c-years" name="years" required>
+                  <option value="">Select</option>
+                  <option value="0">Just started (please be gentle)</option>
+                  <option value="1">1–2 years</option>
+                  <option value="3">3–5 years</option>
+                  <option value="6">6–10 years</option>
+                  <option value="10">10+ years (veteran, or just stubborn)</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="c-instagram">Instagram handle</label>
+              <input class="input" id="c-instagram" name="instagram" type="text" placeholder="@yourhandle" autocapitalize="off" autocorrect="off">
+              <span class="hint">X, TikTok, YouTube and Facebook can come later. One handle. Focus.</span>
+            </div>
+            <div class="field">
+              <label for="c-bio">Short bio</label>
+              <textarea class="input" id="c-bio" name="bio" maxlength="280" placeholder="Two sentences. Where you're from, what your comedy is like, and the one credit your aunty brings up at every braai."></textarea>
+              <span class="hint"><span id="c-bio-count">0</span>/280</span>
+            </div>
+            <label class="check"><input type="checkbox" name="newsletter" checked> Also send me the weekly line-up and open-mic list (know thy enemy)</label>
+            <button class="btn btn-primary btn-lg" type="submit" id="c-submit"><span class="btn-content">Initiate me</span></button>
+            <p class="small muted">Every level welcome. If you've done a paid spot or survived a regular open mic, you belong here.</p>
+          </form>
+
+          <!-- Success -->
+          <div class="form-success" id="form-success" data-active="false">
+            <span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+            <h3 id="success-title">You're in.</h3>
+            <p class="muted" id="success-body"></p>
+            <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;justify-content:center">
+              <a class="btn btn-primary" href="events.html">Go book something</a>
+              <button class="btn btn-ghost" id="success-again">Recruit someone else</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/join.js"></script>
+</body>
+</html>

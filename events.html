@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events — The Giggling Cult</title>
+  <meta name="description" content="Interactive calendar of every stand-up comedy show in Gauteng, the Western Cape and KwaZulu-Natal. Browse by date, list or comedian.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header id="site-nav"></header>
+
+  <main>
+    <section class="page-head">
+      <div class="container">
+        <span class="eyebrow enter" style="--i:0">Events</span>
+        <h1 class="enter" style="--i:1">Where the laughs are.</h1>
+        <p class="enter" style="--i:2">Every show we know about, three ways: a calendar, a straight list, or by comedian. Filter by province so you don't book a Durban show from Joburg. Again.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <!-- View toggle -->
+        <div class="section-head" style="margin-bottom:16px">
+          <div class="seg" id="view-seg" role="group" aria-label="View">
+            <button class="seg-btn" data-value="calendar" aria-pressed="true">Calendar</button>
+            <button class="seg-btn" data-value="list" aria-pressed="false">List</button>
+            <button class="seg-btn" data-value="comedian" aria-pressed="false">By comedian</button>
+          </div>
+          <span class="small muted" id="view-hint"></span>
+        </div>
+
+        <!-- Province filter: visually separate from the view toggle -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <span class="filter-label">Province</span>
+            <span class="filter-sep"></span>
+            <div class="filter-group" id="province-chips"></div>
+          </div>
+          <span class="filter-result" id="filter-result"></span>
+        </div>
+
+        <!-- Calendar view -->
+        <div id="view-calendar" class="calendar" hidden>
+          <div class="cal">
+            <div class="cal-head">
+              <span class="cal-title" id="cal-title"></span>
+              <div class="cal-nav">
+                <button class="icon-btn" id="cal-prev" aria-label="Previous month"></button>
+                <button class="btn btn-soft btn-sm" id="cal-today">Today</button>
+                <button class="icon-btn" id="cal-next" aria-label="Next month"></button>
+              </div>
+            </div>
+            <div class="cal-dow"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+            <div class="cal-grid" id="cal-grid" role="grid"></div>
+            <div class="cal-legend">
+              <span><i style="--c:var(--gp)"></i>Gauteng</span>
+              <span><i style="--c:var(--wc)"></i>Western Cape</span>
+              <span><i style="--c:var(--kzn)"></i>KwaZulu-Natal</span>
+              <span style="margin-left:auto">Click a day. Go on.</span>
+            </div>
+          </div>
+          <div class="cal-side swap" id="cal-side"></div>
+        </div>
+
+        <!-- List view -->
+        <div id="view-list" class="swap" hidden></div>
+
+        <!-- By comedian view -->
+        <div id="view-comedian" class="picker" hidden>
+          <div class="picker-list" id="picker-list">
+            <div class="picker-search">
+              <div class="search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                <input class="input" id="picker-search" type="search" placeholder="Who are we looking for?" autocomplete="off">
+              </div>
+            </div>
+            <div id="picker-items"></div>
+          </div>
+          <div class="swap" id="picker-results"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/events.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "thegigglingcult",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Giggling Cult — South African stand-up comedy platform (static site)",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "start": "npx serve . -l 3000"
+  }
+}
